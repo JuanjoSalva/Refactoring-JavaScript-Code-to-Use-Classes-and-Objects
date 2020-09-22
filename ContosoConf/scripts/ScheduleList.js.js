@@ -1,41 +1,39 @@
-﻿//javascript
-	import { ScheduleItem } from "./ScheduleItem.js";
+﻿import { ScheduleItem } from "./ScheduleItem.js";
 
-	export class ScheduleList {
-		
-		constructor(element, localStarStorage) {
-		this.element = element;
-		this.localStarStorage = localStarStorage;
-	}
-	}
-	
-	async startDownload() {
-		// await response of fetch call
-		let response = await fetch("/schedule/list")
-		// transform body to json
-		let data = await response.json();
+export class ScheduleList {
+    constructor(element, localStarStorage) {
+        this.element = element;
+        this.localStarStorage = localStarStorage;
+    }
 
-		// checking response is ok
-		if (response.ok) {
-			this.downloadDone(data);
-		} else {
-			this.downloadFailed();
-		}
-	}
+    async startDownload() {
+        // await response of fetch call
+        let response = await fetch("/schedule/list")
+        // transform body to json
+        let data = await response.json();
 
-	downloadDone(responseData) {
-		this.addAll(responseData.schedule);
-	}
+        // checking response is ok
+        if (response.ok) {
+            this.downloadDone(data);
+        } else {
+            this.downloadFailed();
+        }
+    }
 
-	downloadFailed() {
-		alert("Could not retrieve schedule data at this time. Please try again later.");
-	}
+    downloadDone(responseData) {
+        this.addAll(responseData.schedule);
+    }
 
-	addAll(itemsArray) {
-		itemsArray.forEach(this.add, this);
-	}
+    downloadFailed() {
+        alert("Could not retrieve schedule data at this time. Please try again later.");
+    }
 
-	add(itemData) {
-		const item = new ScheduleItem(itemData, this.localStarStorage);
-		this.element.appendChild(item.element);
-	}
+    addAll(itemsArray) {
+        itemsArray.forEach(this.add, this);
+    }
+
+    add(itemData) {
+        const item = new ScheduleItem(itemData, this.localStarStorage);
+        this.element.appendChild(item.element);
+    }
+}
